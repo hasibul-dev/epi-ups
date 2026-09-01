@@ -1,195 +1,203 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { SOCIAL_LINKS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, WHATSAPP_NUMBER, NICKNAME } from '@/constants/config';
-import { Mail, Phone, Github, Linkedin, Facebook, ArrowUp, Sparkles, Heart, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowUpRight, Facebook, Linkedin, Mail, MapPin, Phone, ShieldCheck, Send, CheckCircle2 } from 'lucide-react';
+import logoImage from '../../image/logo.png';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const scrollToSection = (e: React.MouseEvent, sectionId: string) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (location.pathname !== '/') {
-      navigate('/');
-      setTimeout(() => {
-        const el = document.getElementById(sectionId);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const goHome = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (location.pathname !== '/') {
-      navigate('/');
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (email) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 5000);
     }
   };
 
   const quickLinks = [
-    { label: 'Home', action: goHome },
-    { label: 'About', action: (e: React.MouseEvent) => scrollToSection(e, 'about') },
-    { label: 'Portfolio', action: (e: React.MouseEvent) => scrollToSection(e, 'portfolio') },
-    { label: 'Contact', action: (e: React.MouseEvent) => scrollToSection(e, 'contact') },
+    { label: 'Home', href: '#home' },
+    { label: 'About Us', href: '#about' },
+    { label: 'Products', href: '#products' },
+    { label: 'Solutions', href: '#solutions' },
+    { label: 'Contact', href: '#contact' },
   ];
 
-  const socials = [
-    { href: SOCIAL_LINKS.github, icon: Github, label: 'GitHub', bg: 'hover:bg-neutral-800/40 hover:text-white' },
-    { href: SOCIAL_LINKS.linkedin, icon: Linkedin, label: 'LinkedIn', bg: 'hover:bg-[#7CFF00]/10 hover:text-[#7CFF00]' },
-    { href: SOCIAL_LINKS.facebook, icon: Facebook, label: 'Facebook', bg: 'hover:bg-[#7CFF00]/10 hover:text-[#7CFF00]' },
+  const companyLinks = [
+    { label: 'Industries Served', href: '#industries' },
+    { label: 'Featured Projects', href: '#projects' },
+    { label: 'Global Presence', href: '#global-presence' },
+    { label: 'Bangladesh Hub', href: '#bangladesh' },
+  ];
+
+  const socialLinks = [
+    { label: 'LinkedIn', href: 'https://www.linkedin.com', icon: Linkedin },
+    { label: 'Facebook', href: 'https://www.facebook.com', icon: Facebook },
   ];
 
   return (
-    <footer className="relative bg-[#050505] text-white pt-24 pb-8 overflow-hidden border-t border-white/[0.03]">
-      
-      {/* 1. SOLID GIANT WATERMARK TEXT (Highly Visible & Sharp) */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none select-none text-center font-black tracking-tighter text-[28vw] leading-none opacity-[0.06] text-white mix-blend-normal"
-        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-      >
-        {NICKNAME}
-      </div>
+    <footer className="relative bg-[#020B18] text-slate-300 overflow-hidden font-sans border-t border-white/10">
+      {/* Background Mesh Gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(0,64,144,0.15)_0%,transparent_50%),radial-gradient(circle_at_90%_80%,rgba(208,32,48,0.08)_0%,transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      {/* High-tech abstract lighting & glow ambient effects */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#7CFF00]/8 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
-      <div className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-[#A6FF00]/8 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
-
-      <div className="relative z-10 max-w-[1700px] mx-auto px-4 md:px-8">
+      {/* Desktop Max-Width Container adjusted to 1700px */}
+      <div className="relative mx-auto max-w-[1700px] px-6 pt-20 pb-12 lg:px-12">
         
-        {/* SECTION 1: Minimalist heading & Mega CTA */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-20">
+        {/* Top Newsletter Card */}
+        <div className="mb-16 rounded-3xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-md xl:p-12 xl:flex xl:items-center xl:justify-between gap-12">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#7CFF00' }}>
-              <Sparkles size={12} className="animate-spin" style={{ animationDuration: '3s' }} />
-              <span>Let's collaborate</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Ready to bring your <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7CFF00] to-[#A6FF00]">
-                next big idea to life?
-              </span>
-            </h2>
+            <span className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3.5 py-1 text-xs font-medium text-blue-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+              Stay Informed
+            </span>
+            <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl xl:text-4xl">
+              Power insights, straight to your inbox.
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400 sm:text-base">
+              Subscribe to receive technical updates, uptime strategies, and enterprise power infrastructure news.
+            </p>
           </div>
-          
-          {/* CTA Button with smooth hover effects */}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="group relative inline-flex items-center justify-center p-4 px-8 py-4 overflow-hidden font-bold rounded-2xl bg-white text-black transition-all duration-300 ease-out shadow-xl shadow-white/5 hover:scale-[1.05] hover:shadow-[#7CFF00]/10">
-            <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#7CFF00] to-[#A6FF00] group-hover:translate-x-0 ease-out">
-              <ArrowRight size={20} />
-            </span>
-            <span className="absolute flex items-center justify-center w-full h-full text-black transition-all duration-300 transform group-hover:translate-x-full ease-out">
-              Start A Project
-            </span>
-            <span className="relative invisible">Start A Project</span>
-          </a>
+
+          <form onSubmit={handleSubscribe} className="mt-6 xl:mt-0 flex-1 max-w-md">
+            <div className="relative flex items-center">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your corporate email"
+                className="w-full rounded-2xl border border-white/15 bg-white/5 py-4 pl-5 pr-36 text-sm text-white placeholder-slate-500 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-blue-500 active:scale-95"
+              >
+                {subscribed ? (
+                  <>
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                    Joined
+                  </>
+                ) : (
+                  <>
+                    Subscribe
+                    <Send className="h-3.5 w-3.5" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
 
-        {/* SECTION 2: Ultra-Modern Bento Grid (Fully Transparent & High Animation) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        {/* Main Grid for 1700px Desktop view */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 xl:gap-16">
           
-          {/* CARD 1: Quick links & Navigation */}
-          <div className="p-8 rounded-3xl bg-transparent border border-white/[0.06] backdrop-blur-md flex flex-col justify-between group hover:bg-white/[0.03] hover:border-white/[0.15] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out">
-            <div>
-              <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6 group-hover:text-neutral-400 transition-colors">Navigation</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {quickLinks.map(({ label, action }) => (
-                  <a
-                    key={label}
-                    href="/"
-                    onClick={action}
-                    className="text-sm text-neutral-400 hover:text-white font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1 group/link"
-                  >
-                    <span>{label}</span>
-                    <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all" style={{ color: '#7CFF00' }} />
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-white/[0.05] text-xs text-neutral-500 font-medium group-hover:text-neutral-400 transition-colors">
-              Explore my digital playground.
+          {/* Brand & Mission */}
+          <div className="lg:col-span-5 xl:col-span-4">
+            <a href="#home" className="inline-block focus:outline-none">
+              <img src={logoImage} alt="EPI UPS Bangladesh logo" className="h-12 w-auto object-contain" />
+            </a>
+            <p className="mt-6 text-sm leading-relaxed text-slate-400 max-w-md xl:text-base">
+              Engineered for absolute reliability. Delivering mission-critical UPS systems, power conditioning, and resilient infrastructure solutions across Bangladesh.
+            </p>
+            
+            {/* Social Icons */}
+            <div className="mt-8 flex items-center gap-3">
+              {socialLinks.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:border-blue-500/50 hover:bg-blue-600/10 hover:text-white"
+                >
+                  <Icon className="h-5 w-5 transition duration-300 group-hover:scale-110" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* CARD 2: Live Contact Methods */}
-          <div className="p-8 rounded-3xl bg-transparent border border-white/[0.06] backdrop-blur-md flex flex-col justify-between group hover:bg-white/[0.03] hover:border-white/[0.15] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out">
-            <div>
-              <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6 group-hover:text-neutral-400 transition-colors">Connect Directly</h3>
-              <div className="space-y-4">
-                <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group/item">
-                  <div className="w-9 h-9 rounded-xl bg-white/[0.03] flex items-center justify-center border border-white/[0.05] group-hover/item:border-[#7CFF00]/40 group-hover/item:bg-[#7CFF00]/5 transition-all duration-300">
-                    <Mail size={16} className="group-hover/item:text-[#7CFF00] transition-colors" />
-                  </div>
-                  <span className="text-sm font-medium truncate">{CONTACT_EMAIL}</span>
-                </a>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group/item">
-                  <div className="w-9 h-9 rounded-xl bg-white/[0.03] flex items-center justify-center border border-white/[0.05] group-hover/item:border-[#A6FF00]/40 group-hover/item:bg-[#A6FF00]/5 transition-all duration-300">
-                    <Phone size={16} className="group-hover/item:text-[#A6FF00] transition-colors" />
-                  </div>
-                  <span className="text-sm font-medium">{CONTACT_PHONE_DISPLAY}</span>
-                </a>
-              </div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-white/[0.05] flex items-center gap-2 text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors">
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#7CFF00' }} />
-              <span>Available for freelance contracts</span>
-            </div>
+          {/* Links Column 1 */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">Quick Links</h4>
+            <ul className="mt-6 space-y-3.5 text-sm">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="group inline-flex items-center gap-1 text-slate-400 transition hover:text-white">
+                    {link.label}
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 -translate-y-1 translate-x-1 transition duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* CARD 3: Social Hub & Brand Identity */}
-          <div className="p-8 rounded-3xl bg-transparent border border-white/[0.06] backdrop-blur-md flex flex-col justify-between group hover:bg-white/[0.03] hover:border-white/[0.15] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out">
-            <div>
-              <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6 group-hover:text-neutral-400 transition-colors">Follow Me</h3>
-              <div className="flex gap-3">
-                {socials.map(({ href, icon: Icon, label, bg }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={label}
-                    className={`w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-neutral-400 hover:scale-110 hover:border-white/20 transition-all duration-300 ${bg}`}
-                  >
-                    <Icon size={18} />
+          {/* Links Column 2 */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">Company</h4>
+            <ul className="mt-6 space-y-3.5 text-sm">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="group inline-flex items-center gap-1 text-slate-400 transition hover:text-white">
+                    {link.label}
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 -translate-y-1 translate-x-1 transition duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0" />
                   </a>
-                ))}
-              </div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-white/[0.05]">
-              <span className="text-base font-bold tracking-wide block mb-1 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#7CFF00] transition-all duration-300" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Hasibul Hassan
-              </span>
-              <span className="text-[11px] text-neutral-500 block leading-tight group-hover:text-neutral-400 transition-colors">
-                Software Engineer & UI/UX Specialist.
-              </span>
-            </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div className="lg:col-span-3 xl:col-span-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">Contact Us</h4>
+            <ul className="mt-6 space-y-4 text-sm text-slate-400">
+              <li>
+                <a href="mailto:info@epiupsbd.com" className="flex items-center gap-3 transition hover:text-white group">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 group-hover:border-blue-500/50 group-hover:text-blue-400">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  info@epiupsbd.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+8801700000000" className="flex items-center gap-3 transition hover:text-white group">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 group-hover:border-blue-500/50 group-hover:text-blue-400">
+                    <Phone className="h-4 w-4" />
+                  </div>
+                  +880 1700-000000
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300">
+                  <MapPin className="h-4 w-4" />
+                </div>
+                Dhaka, Bangladesh
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300">
+                  <ShieldCheck className="h-4 w-4" />
+                </div>
+                Service & Maintenance Support
+              </li>
+            </ul>
           </div>
 
         </div>
 
-        {/* SECTION 3: Bottom Bar & Copyright info */}
-        <div className="pt-8 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="text-neutral-500 text-xs font-medium text-center sm:text-left">
-            <span>&copy; {currentYear} {NICKNAME}. All rights reserved. </span>
-            <span className="block sm:inline sm:ml-2 mt-1 sm:mt-0 text-neutral-600">
-              Made with <Heart size={10} className="inline text-[#7CFF00] fill-[#7CFF00] mx-0.5" /> in Bangladesh
-            </span>
+        {/* Bottom Bar */}
+        <div className="mt-16 border-t border-white/10 pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row text-xs text-slate-500">
+          <p>© {currentYear} EPI UPS Bangladesh. All rights reserved.</p>
+
+          <div className="flex items-center gap-6">
+            <a href="#privacy" className="transition hover:text-slate-300">Privacy Policy</a>
+            <a href="#terms" className="transition hover:text-slate-300">Terms of Service</a>
+            <a href="#home" className="inline-flex items-center gap-1.5 font-medium text-slate-300 transition hover:text-white">
+              Back to top
+              <ArrowUpRight className="h-3.5 w-3.5 -rotate-45" />
+            </a>
           </div>
-          
-          <button
-            onClick={scrollToTop}
-            className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.01] hover:bg-white/[0.06] border border-white/[0.05] hover:border-white/[0.12] text-neutral-400 hover:text-white transition-all duration-300 text-xs font-semibold tracking-wide shadow-sm"
-          >
-            <span>Back to top</span>
-            <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
-          </button>
         </div>
 
       </div>
